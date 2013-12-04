@@ -1,0 +1,33 @@
+[user]
+	name = Jean van der Walt
+	email = jfvanderwalt@gmail.com
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  df = diff
+  co = checkout
+[color]
+  diff = auto
+  status = auto
+  branch = auto
+[color "diff"]
+  meta = yellow 
+[core]
+  excludesfile = ~/.gitignore
+  editor = vim --noplugin
+[apply]
+  whitespace = nowarn
+[help]
+  autocorrect = 1
+[branch]
+  autosetupmerge = true
+  autosetuprebase = always
+[push]
+  default = current
+[rerere]
+  enabled = 1
+[github]
+  user = jfvanderwalt
+[merge]
+  ff = only
