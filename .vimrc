@@ -4,15 +4,24 @@ call vundle#rc()
 
 " Bundles
 Bundle 'gmarik/vundle'
-"Bundle 'kchmck/vim-coffee-script'
-"Bundle 'tpope/vim-rails'
-"Bundle 'vim-ruby/vim-ruby'
+Bundle 'kchmck/vim-coffee-script'
+Bundle 'tpope/vim-rails'
+Bundle 'vim-ruby/vim-ruby'
 Bundle 'wincent/Command-T'
 Bundle 'ervandew/supertab'
+Bundle 'tpope/vim-surround'
+Bundle 'tomtom/tcomment_vim'
+
+" Snipmate
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle 'honza/vim-snippets'
+Bundle "garbas/vim-snipmate"
 
 " Required for vundle
 filetype plugin indent on 
 
+"set t_Co=256
 colorscheme github
 
 syntax on
@@ -85,6 +94,10 @@ endfunction
 " End Test-running stuff
 
 let mapleader = ","
-
+map <Leader>p :set paste <CR>o<esc>"]p:set nopaste<cr>
+map <Leader>i mmgg=G`m<CR>
 map <leader>rt :call RunCurrentTest()<CR>
 map <leader>rl :call RunCurrentLineInTest()<CR>
+map <Leader>h :nohlsearch<cr> 
+map <Leader>gs :Gstatus<CR>
+map <Leader>m :Rmodel 
