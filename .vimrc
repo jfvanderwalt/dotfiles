@@ -55,6 +55,11 @@ set cursorline
 set ignorecase
 set smartcase
 
+set winwidth=84
+set winheight=5
+set winminheight=5
+set winheight=999
+
 " (Hopefully) removes the delay when hitting esc in insert mode
 set noesckeys
 set ttimeout
