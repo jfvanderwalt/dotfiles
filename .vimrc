@@ -12,6 +12,7 @@ Bundle 'ervandew/supertab'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'thoughtbot/vim-rspec'
+Bundle 'jgdavey/tslime.vim'
 Bundle 'Lokaltog/vim-powerline'
 Bundle 'rking/ag.vim'
 Bundle 'slim-template/vim-slim'
@@ -86,6 +87,7 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 
 let mapleader = ","
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 
 " Navigation
 map <Leader>p :CtrlP<cr>
