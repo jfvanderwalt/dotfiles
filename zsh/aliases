@@ -19,3 +19,4 @@ alias rsb='bundle install && rails server -p 3000'
 alias rdm="be rake db:migrate"
 alias rdtp="be rake db:test:prepare"
 alias v='vim'
+alias tmux="tmux -2"
