@@ -3,20 +3,36 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Bundles
-Bundle 'gmarik/vundle'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'tpope/vim-rails'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'kien/ctrlp.vim'
-Bundle 'ervandew/supertab'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'thoughtbot/vim-rspec'
-Bundle 'jgdavey/tslime.vim'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'rking/ag.vim'
-Bundle 'slim-template/vim-slim'
-Bundle 'tpope/vim-endwise'
+Plugin 'gmarik/vundle'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'tpope/vim-rails'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'kien/ctrlp.vim'
+Plugin 'ervandew/supertab'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tomtom/tcomment_vim'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'jgdavey/tslime.vim'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'rking/ag.vim'
+Plugin 'slim-template/vim-slim'
+Plugin 'tpope/vim-endwise'
+Plugin 'Raimondi/delimitMate'
+Plugin 'tpope/vim-surround'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'gorodinskiy/vim-coloresque'
+
+" Clojure
+Plugin 'guns/vim-clojure-static'
+Plugin 'tpope/vim-classpath'
+Plugin 'tpope/vim-fireplace'
+Plugin 'tpope/vim-leiningen'
+
+" Javascript
+Plugin 'pangloss/vim-javascript'
+Plugin 'dsawardekar/ember.vim'
+Plugin 'nono/vim-handlebars'
+Plugin 'heartsentwined/vim-emblem'
 
 " Required for vundle
 filetype plugin indent on 
@@ -55,7 +71,7 @@ set laststatus=2
 set cursorline
 set ignorecase
 set smartcase
-
+set backspace=2
 set winwidth=84
 set winheight=5
 set winminheight=5
@@ -78,7 +94,9 @@ endif
 
 " Bind commands
 command! Q q
+command! Qall qall
 command! W w
+command! Wa wall
 
 " Map arrow keys to void
 noremap <Up> <Nop>
@@ -91,13 +109,14 @@ let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 
 " Navigation
 map <Leader>p :CtrlP<cr>
-map <Leader>m :Rmodel 
+map <Leader>m :Rmodel<cr>
+map <Leader>av :AV<cr>
 
 " vim-rspec mappings
-map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>c :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
-map <Leader>a :call RunAllSpecs()<CR>
+map <Leader>t :call RunAllSpecs()<CR>
 
 " vim-fugitive mappings
 map <Leader>gs :Gstatus<CR>
@@ -118,9 +137,26 @@ map <Leader>h :nohlsearch<cr>
 map <leader>vi :tabe ~/.vimrc<CR>
 map <leader>vs :source ~/.vimrc<CR>
 
+map  <leader>bi :!bundle install<space>
+map  <leader>bu :!bundle update<space>
+nmap <leader>zx :!zeus<space>
+map <leader>vbi :PluginInstall<cr>
+map <leader>vbu :PluginUpdate<cr>
+
+map <leader>cts /[a-z][A-Z]/<CR>a_<ESC>l~
+
 " Emacs-like beginning and end of line.
 imap <c-e> <c-o>$
 imap <c-a> <c-o>^
+
+inoremap <c-s> <esc>:w<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OPEN FILES IN DIRECTORY OF CURRENT FILE
+" """""""""""""""""""""""""""""""""""""""""""""""""""""
+cnoremap <expr> %% expand('%:h').'/'
+map <leader>e :edit %%
+map <leader>v :view %%
 
 " rename current file, via Gary Bernhardt
 function! RenameFile()
@@ -133,3 +169,5 @@ function! RenameFile()
   endif
 endfunction
 map <leader>n :call RenameFile()<cr>
+
+command! FindConditionals :normal /\<if\>\|\<unless\>\|\<and\>\|\<or\>\|||\|&&<cr>
