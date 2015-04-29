@@ -131,15 +131,11 @@ alias cl='sbcl'
 alias lisp='sbcl'
 
 # project aliases
-alias mds='cd ~/Develop/work/45/ereads/MDS/'
-alias fp='cd ~/Develop/work/45/fenixpro/app/'
-alias anz='cd ~/Develop/work/45/anz/anz-merchant-portal/'
+alias anz='cd ~/code/work/anz-merchant-portal/'
+alias anza='cd ~/code/work/anz-admin/'
 alias anzbox='ssh jean@202.167.246.11'
-alias oregano='cd ~/Develop/projects/rebel-coders/oregano/oregano-prototype/'
 alias pair='export PAIRING=1'
-alias til='cd ~/Develop/work/45/happy/til/'
-alias happy='cd ~/Develop/work/45/happy/'
-alias dotfiles='cd ~/Develop/dotfiles/'
+alias dotfiles='cd ~/code/dotfiles/'
 
 # tmux aliases
 alias ta='tmux attach -t'
@@ -148,30 +144,16 @@ alias tl='tmux list-sessions'
 alias tm='tmux show-messages'
 alias tk='tmux kill-session -t'
 
-# ereadz aliases
-alias precompile='bundle exec rake assets:clean && bundle exec rake assets:precompile'
-alias migrate='bundle exec rake db:migrate && bundle exec rake db:rollback && bundle exec rake db:migrate'
-alias sunspot='sudo killall java && bundle exec rake sunspot:solr:start RAILS_ENV=test; bundle exec rake sunspot:solr:start RAILS_ENV=development'
-
 # command aggregation aliases
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 # .*rc file changes
 alias zrc="vim ~/.zshrc"
 alias vrc="vim ~/.vimrc"
 alias trc="vim ~/.tmux.conf"
-alias nodeh="node --harmony"
-
-# betty - siri for command line
-alias betty="~/.betty/main.rb"
 
 alias delswp="find . | grep .swp | xargs rm"
 alias delds="find . | grep .DS_Store | xargs rm"
 alias eclock="emoji-clock"
-#alias coursera="coursera -n --"
-
-function coursera {
-  /usr/local/bin/coursera -n -- $@
-}
 
 ######################################
 ### Custom Shell Features
@@ -195,6 +177,11 @@ function gh {
 function gpoc {
   echo Pushing $(current_branch)
   git push origin $(current_branch)
+}
+
+# pull status
+function gs {
+  git status
 }
 
 # pull origin current_branch
@@ -289,13 +276,12 @@ function service {
 }
 
 function sync_dotfiles {
-  cp ~/.vimrc ~/Develop/dotfiles/
-  cp ~/.tmux.conf ~/Develop/dotfiles/
-  cp ~/.zshrc ~/Develop/dotfiles/
-  cp ~/.gitconfig ~/Develop/dotfiles/
-  cp ~/.gitignore ~/Develop/dotfiles/
-  cp ~/.gitignore_global ~/Develop/dotfiles/
-  cp -R ~/.tmuxinator ~/Develop/dotfiles/
+  cp ~/.vimrc ~/code/dotfiles/
+  cp ~/.tmux.conf ~/code/dotfiles/
+  cp ~/.zshrc ~/code/dotfiles/
+  cp ~/.gitconfig ~/code/dotfiles/
+  cp ~/.gitignore ~/code/dotfiles/
+  cp ~/.gitignore_global ~/code/dotfiles/
 }
 
 ######################################
