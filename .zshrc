@@ -1,54 +1,47 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.oh-my-zsh
+# Show contents of directory after cd-ing into it
+chpwd() {
+  ls -lrthG
+}
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-# ZSH_THEME="robbyrussell"
-ZSH_THEME="jean"
-# ZSH_THEME="doubleend"
-# ZSH_THEME="blinks"
-# ZSH_THEME="bira"
+setopt prompt_subst
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' stagedstr 'M' 
+zstyle ':vcs_info:*' unstagedstr 'M' 
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' actionformats '%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats \
+    '%F{5}[%F{2}%b%F{5}] %F{2}%c%F{3}%u%f'
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
+zstyle ':vcs_info:*' enable git 
++vi-git-untracked() {
+  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep '??' &> /dev/null ; then
+      hook_com[unstaged]+='%F{1}??%f'
+        fi  
+      }
 
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
+      precmd () { vcs_info }
+      PROMPT='%F{5}[%F{2}%n%F{5}] %F{3}%3~ ${vcs_info_msg_0_} %f%# '
 
-# Uncomment this to disable bi-weekly auto-update checks
-# DISABLE_AUTO_UPDATE="true"
 
-# Uncomment to change how often before auto-updates occur? (in days)
+function current_branch { 
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || \
+  ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
+}
+
 export UPDATE_ZSH_DAYS=7
 
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want to disable command autocorrection
-# DISABLE_CORRECTION="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
 COMPLETION_WAITING_DOTS="true"
 
-# Uncomment following line if you want to disable marking untracked files under
-# VCS as dirty. This makes repository status check for large repositories much,
-# much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment following line if you want to  shown in the command execution time stamp
-# in the history command output. The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|
-# yyyy-mm-dd
 HIST_STAMPS="dd.mm.yyyy"
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# I'm considering extracting the aliases I actually use... and leaving the rest.
-plugins=(git brew bundler postgres mysql ruby zeus vi-mode wd colored-man emoji-clock nyan)
+# Handy keybindings
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+bindkey "^W" forward-word
 
-source $ZSH/oh-my-zsh.sh
+plugins=(git brew bundler postgres mysql ruby zeus vi-mode wd colored-man emoji-clock nyan)
 
 #############################################
 ### User configuration
@@ -57,8 +50,6 @@ export PATH="/usr/local/share/npm/bin":$PATH
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin":$PATH
 export PATH="$HOME/.rbenv/bin":$PATH
 export PATH="$HOME/.rbenv/shims":$PATH
-export PATH="$HOME/.pyenv/bin":$PATH
-export PATH="$HOME/.pyenv/shims":$PATH
 export PATH="/usr/local/heroku/bin":$PATH
 export PATH="/usr/local/narwhal/bin":$PATH
 export MANPATH="/usr/local/man:$MANPATH"
@@ -89,9 +80,8 @@ setopt auto_cd
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# rbenv and pyenv
+# rbenv
 eval "$(rbenv init -)"
-eval "$(pyenv init -)"
 
 
 ######################################
@@ -124,11 +114,6 @@ alias rk='bundle exec rake'
 alias rb='bundle exec ruby'
 alias rt='bundle exec rspec'
 alias rg='bundle exec rake routes | grep'
-
-# language aliases
-alias py='python'
-alias cl='sbcl'
-alias lisp='sbcl'
 
 # project aliases
 alias anz='cd ~/code/work/anz-merchant-portal/'
@@ -179,7 +164,12 @@ function gpoc {
   git push origin $(current_branch)
 }
 
-# pull status
+# git difftool
+function gd {
+  git difftool
+}
+
+# git status
 function gs {
   git status
 }
