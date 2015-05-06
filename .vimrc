@@ -21,15 +21,13 @@ Plugin 'Raimondi/delimitMate'
 Plugin 'tpope/vim-surround'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'gorodinskiy/vim-coloresque'
-
-" Clojure
-Plugin 'guns/vim-clojure-static'
-Plugin 'tpope/vim-classpath'
-Plugin 'tpope/vim-fireplace'
-Plugin 'tpope/vim-leiningen'
-
-" Javascript
+Plugin 'marcweber/vim-addon-mw-utils'
+Plugin 'tomtom/tlib_vim'
+Plugin 'garbas/vim-snipmate'
+Plugin 'honza/vim-snippets'
 Plugin 'pangloss/vim-javascript'
+
+" Ember
 Plugin 'dsawardekar/ember.vim'
 Plugin 'nono/vim-handlebars'
 Plugin 'heartsentwined/vim-emblem'
@@ -38,8 +36,10 @@ Plugin 'heartsentwined/vim-emblem'
 filetype plugin indent on 
 
 " Colours
-Bundle 'nanotech/jellybeans.vim'
-colorscheme jellybeans
+Plugin 'altercation/vim-colors-solarized'
+syntax enable
+set background=dark
+colorscheme solarized
 
 " Powerline
 let g:Powerline_symbols = 'fancy'
@@ -65,7 +65,7 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab   
 set incsearch
-set tw=80
+"set tw=80
 set noswapfile
 set laststatus=2
 set cursorline
@@ -105,7 +105,7 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 
 let mapleader = ","
-let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
 
 " Navigation
 map <Leader>p :CtrlP<cr>
@@ -136,6 +136,9 @@ map <Leader>h :nohlsearch<cr>
 
 map <leader>vi :tabe ~/.vimrc<CR>
 map <leader>vs :source ~/.vimrc<CR>
+
+map <leader>gf :e Gemfile<CR>
+map <leader>rf :e config/routes.rb<CR>
 
 map  <leader>bi :!bundle install<space>
 map  <leader>bu :!bundle update<space>
