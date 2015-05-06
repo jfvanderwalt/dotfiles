@@ -140,6 +140,8 @@ alias delswp="find . | grep .swp | xargs rm"
 alias delds="find . | grep .DS_Store | xargs rm"
 alias eclock="emoji-clock"
 
+alias cl='clear'
+
 ######################################
 ### Custom Shell Features
 
@@ -178,6 +180,18 @@ function gs {
 function gloc {
   echo Pulling $(current_branch)
   git pull origin $(current_branch)
+}
+
+# pull checkout branch
+function gc {
+  echo Checking out from $(current_branch)
+  git checkout $1
+}
+
+# pull checkout new branch
+function gcb {
+  echo Checking out from $(current_branch)
+  git checkout -b $1
 }
 
 # fetch origin current_branch
