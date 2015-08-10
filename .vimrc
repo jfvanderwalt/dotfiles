@@ -1,5 +1,5 @@
 " Vundle
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
 " Bundles
@@ -26,6 +26,7 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'garbas/vim-snipmate'
 Plugin 'honza/vim-snippets'
 Plugin 'pangloss/vim-javascript'
+Plugin 'elzr/vim-json'
 
 " Ember
 Plugin 'dsawardekar/ember.vim'
@@ -33,7 +34,7 @@ Plugin 'nono/vim-handlebars'
 Plugin 'heartsentwined/vim-emblem'
 
 " Required for vundle
-filetype plugin indent on 
+filetype plugin indent on
 
 " Colours
 Plugin 'altercation/vim-colors-solarized'
@@ -61,9 +62,9 @@ set history=750
 set number
 set relativenumber
 set tabstop=2
-set shiftwidth=2    
+set shiftwidth=2
 set softtabstop=2
-set expandtab   
+set expandtab
 set incsearch
 "set tw=80
 set noswapfile
@@ -120,6 +121,7 @@ map <Leader>t :call RunAllSpecs()<CR>
 
 " vim-fugitive mappings
 map <Leader>gs :Gstatus<CR>
+map <Leader>gw :Gwrite<CR>
 map <Leader>gac :Gcommit -a -m ""<LEFT>
 map <Leader>gc :Gcommit -m ""<LEFT>
 map <Leader>gd :Gdiff<CR>
@@ -132,7 +134,7 @@ map <leader>a :Ag!<space>
 map <leader>A :Ag! "<C-r>=expand('<cword>')<CR>"
 
 map <Leader>i mmgg=G`m<CR>
-map <Leader>h :nohlsearch<cr> 
+map <Leader>h :nohlsearch<cr>
 
 map <leader>vi :tabe ~/.vimrc<CR>
 map <leader>vs :source ~/.vimrc<CR>
@@ -154,14 +156,15 @@ imap <c-a> <c-o>^
 
 inoremap <c-s> <esc>:w<cr>
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""
-" OPEN FILES IN DIRECTORY OF CURRENT FILE
-" """""""""""""""""""""""""""""""""""""""""""""""""""""
+" Macros
+let @b = 'Obinding.pry'
+
+" Open files in current directory of file
 cnoremap <expr> %% expand('%:h').'/'
 map <leader>e :edit %%
 map <leader>v :view %%
 
-" rename current file, via Gary Bernhardt
+" Rename current file
 function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'))
@@ -173,4 +176,18 @@ function! RenameFile()
 endfunction
 map <leader>n :call RenameFile()<cr>
 
+" Requires 'jq' (brew install jq)
+" Set the filetype to json and pretty print
+function! s:PrettyJSON()
+  %!jq .
+  set filetype=json
+endfunction
+map <leader>pj :call <sid>PrettyJSON()<CR>
+
 command! FindConditionals :normal /\<if\>\|\<unless\>\|\<and\>\|\<or\>\|||\|&&<cr>
+autocmd BufWritePre * :%s/\s\+$//e
+
+" Hint to keep lines short
+if exists('+colorcolumn')
+  set colorcolumn=80
+endif
