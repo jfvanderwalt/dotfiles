@@ -1,44 +1,55 @@
+let mapleader = "\<Space>"
+
 " Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 
-" Bundles
+" Plugins
 Plugin 'gmarik/vundle'
+Plugin 'tmhedberg/matchit'
+Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'tpope/vim-rails'
 Plugin 'vim-ruby/vim-ruby'
-Plugin 'kien/ctrlp.vim'
-Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tomtom/tcomment_vim'
-Plugin 'thoughtbot/vim-rspec'
-Plugin 'jgdavey/tslime.vim'
 Plugin 'Lokaltog/vim-powerline'
-Plugin 'rking/ag.vim'
-Plugin 'slim-template/vim-slim'
-Plugin 'tpope/vim-endwise'
-Plugin 'Raimondi/delimitMate'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-endwise'
+Plugin 'rking/ag.vim'
+Plugin 'Raimondi/delimitMate'
+Plugin 'kien/ctrlp.vim'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'gorodinskiy/vim-coloresque'
-Plugin 'marcweber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-Plugin 'honza/vim-snippets'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'pbrisbin/vim-mkdir'
 Plugin 'pangloss/vim-javascript'
 Plugin 'elzr/vim-json'
+Plugin 'rizzatti/dash.vim'
+
+" UltiSnips
+Plugin 'ervandew/supertab'
+Plugin 'Valloric/youCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " Ember
 Plugin 'dsawardekar/ember.vim'
 Plugin 'nono/vim-handlebars'
 Plugin 'heartsentwined/vim-emblem'
 
-" Required for vundle
-filetype plugin indent on
+" Use % to jump between start/end of methods
+runtime macros/matchit.vim 
+
+" Required for Vundle
+filetype plugin indent on 
 
 " Colours
-Plugin 'altercation/vim-colors-solarized'
 syntax enable
+syntax on
 set background=dark
 colorscheme solarized
 
@@ -50,14 +61,31 @@ let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_height = 30
 let g:ctrlp_match_window_reversed = 0
 
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+" Vim-Rspec using Dispatch
+let g:rspec_command = "Dispatch bundle exec rspec {spec}"
+
+" Make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" Better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" Set the cursor on insert mode
+if $TMUX != ""
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+set hlsearch
 set t_Co=256
 set encoding=utf-8
-set nocompatible   " Disable vi-compatibility
 set history=750
 set number
 set relativenumber
@@ -66,7 +94,6 @@ set shiftwidth=2
 set softtabstop=2
 set expandtab
 set incsearch
-"set tw=80
 set noswapfile
 set laststatus=2
 set cursorline
@@ -74,17 +101,24 @@ set ignorecase
 set smartcase
 set backspace=2
 set winwidth=84
-set winheight=5
-set winminheight=5
+set winheight=8
+set winminheight=8
 set winheight=999
+set pastetoggle=<leader>mp
 
-" (Hopefully) removes the delay when hitting esc in insert mode
-set noesckeys
-set ttimeout
-set ttimeoutlen=1
+" When at 3 spaces and I hit >>, go to 4, not 5.
+set shiftround 
+
+" Say no to code folding
+set nofoldenable 
+
+" Disable vi-compatibility
+set nocompatible 
+
+" Remove delay when hitting esc in insert mode
+set timeoutlen=1000 ttimeoutlen=0 
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-" Source: https://github.com/thoughtbot/dotfiles/blob/master/vimrc
 if executable('ag')
   " Use Ag over Grep
   set grepprg=ag\ --nogroup\ --nocolor
@@ -93,11 +127,30 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" Bind commands
+" Let's be reasonable
 command! Q q
 command! Qall qall
 command! W w
 command! Wa wall
+
+" toggle spell check with <F5>
+map <F5> :setlocal spell! spelllang=en_gb<cr>
+imap <F5> <ESC>:setlocal spell! spelllang=en_gb<cr>
+
+" Emacs-like beginning and end of line.
+imap <c-e> <c-o>$
+imap <c-a> <c-o>^
+
+" Easy access to the start of the line
+nnoremap 0 ^
+
+" Navigate between alternate files quickly
+nnoremap <leader><leader> <C-^>
+
+"nnoremap Y y$
+"nnoremap <Leader>y "*y
+"nnoremap <Leader>p "*p
+"nnoremap <Leader>P "*P
 
 " Map arrow keys to void
 noremap <Up> <Nop>
@@ -105,11 +158,18 @@ noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 
-let mapleader = ","
-let g:rspec_command = 'call Send_to_Tmux("bundle exec rspec {spec}\n")'
+" Leader-; to enter command mode. No more holding shift!
+nnoremap <leader>; :
+vnoremap <leader>; :
+
+" map . in visual mode
+vnoremap . :norm.<cr>
+
+" Execute macro in q
+map Q @q
 
 " Navigation
-map <Leader>p :CtrlP<cr>
+map <Leader>f :CtrlP<cr>
 map <Leader>m :Rmodel<cr>
 map <Leader>av :AV<cr>
 
@@ -122,47 +182,40 @@ map <Leader>t :call RunAllSpecs()<CR>
 " vim-fugitive mappings
 map <Leader>gs :Gstatus<CR>
 map <Leader>gw :Gwrite<CR>
-map <Leader>gac :Gcommit -a -m ""<LEFT>
-map <Leader>gc :Gcommit -m ""<LEFT>
+map <Leader>gc :Gcommit<CR>
 map <Leader>gd :Gdiff<CR>
 map <Leader>gb :Gblame<CR>
-nmap <leader>gp :exec ':Git push origin ' . fugitive#head()<CR>
-nmap <leader>gu :exec ':Git pull origin ' . fugitive#head()<CR>
+
+" Dispatch git push and pull
+nmap <leader>gp :exec ':Dispatch git push origin ' . fugitive#head()<CR>
+nmap <leader>gu :exec ':Dispatch git pull origin ' . fugitive#head()<CR>
+
+" Dispatch bundle mappings
+map <leader>bi :Dispatch bundle install<CR>
+map <leader>bu :Dispatch bundle update<CR>
 
 " Silver Searcher mappings
 map <leader>a :Ag!<space>
-map <leader>A :Ag! "<C-r>=expand('<cword>')<CR>"
+map <leader>A :Ag! "<C-r>=expand('<cword>')<CR>"<CR>
 
 map <Leader>i mmgg=G`m<CR>
 map <Leader>h :nohlsearch<cr>
 
+map <leader>cn :tabe ~/code/notes/coding_notes.txt<CR>
+map <Leader>dj :e ~/code/notes/debugging_journal.txt<cr>
+
 map <leader>vi :tabe ~/.vimrc<CR>
 map <leader>vs :source ~/.vimrc<CR>
-
 map <leader>gf :e Gemfile<CR>
 map <leader>rf :e config/routes.rb<CR>
 
-map  <leader>bi :!bundle install<space>
-map  <leader>bu :!bundle update<space>
-nmap <leader>zx :!zeus<space>
+" Vundle mappings
 map <leader>vbi :PluginInstall<cr>
 map <leader>vbu :PluginUpdate<cr>
-
-map <leader>cts /[a-z][A-Z]/<CR>a_<ESC>l~
-
-" Emacs-like beginning and end of line.
-imap <c-e> <c-o>$
-imap <c-a> <c-o>^
-
-inoremap <c-s> <esc>:w<cr>
-
-" Macros
-let @b = 'Obinding.pry'
 
 " Open files in current directory of file
 cnoremap <expr> %% expand('%:h').'/'
 map <leader>e :edit %%
-map <leader>v :view %%
 
 " Rename current file
 function! RenameFile()
@@ -176,6 +229,21 @@ function! RenameFile()
 endfunction
 map <leader>n :call RenameFile()<cr>
 
+" Split test for current file(:AV does not support gems and libs)
+function! SplitTestFile()
+  let filename = expand('%:t:r')
+  let spec_extension = '_spec.rb'
+  let test_extension = '_test.rb'
+  if !empty(glob('**/' . filename . spec_extension))
+    exec ':vs **/' . filename . spec_extension
+  elseif !empty(glob('**/' . filename . test_extension))
+    exec ':vs **/' . filename . test_extension
+  else
+    echo 'No test found for this file.'
+  endif
+endfunction
+map <leader>st :call SplitTestFile()<CR>
+
 " Requires 'jq' (brew install jq)
 " Set the filetype to json and pretty print
 function! s:PrettyJSON()
@@ -183,11 +251,3 @@ function! s:PrettyJSON()
   set filetype=json
 endfunction
 map <leader>pj :call <sid>PrettyJSON()<CR>
-
-command! FindConditionals :normal /\<if\>\|\<unless\>\|\<and\>\|\<or\>\|||\|&&<cr>
-autocmd BufWritePre * :%s/\s\+$//e
-
-" Hint to keep lines short
-if exists('+colorcolumn')
-  set colorcolumn=80
-endif
